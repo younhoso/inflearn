@@ -1,7 +1,7 @@
 <template>
   <div>
-    <TheNav></TheNav>
-    <TheView></TheView>
+    <TheNav />
+    <TheView />
   </div>
 </template>
 
