@@ -1,19 +1,29 @@
-import js from '@eslint/js'
-import pluginVue from 'eslint-plugin-vue'
-import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'
+/* eslint-env node */
+import '@rushstack/eslint-patch/modern-module-resolution.js'
 
-export default [
-  {
-    name: 'app/files-to-lint',
-    files: ['**/*.{js,mjs,jsx,vue}'],
+module.exports = {
+  root: true,
+  extends: ['plugin:vue/vue3-essential', 'eslint:recommended', '@vue/eslint-config-prettier'],
+  env: {
+    'vue/setup-compiler-macros': true,
   },
-
-  {
-    name: 'app/files-to-ignore',
-    ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**'],
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
   },
-
-  js.configs.recommended,
-  ...pluginVue.configs['flat/essential'],
-  skipFormatting,
-]
+  rules: {
+    'prettier/prettier': [
+      'error',
+      {
+        singleQuote: true,
+        semi: true,
+        tabWidth: 2,
+        trailingComma: 'all',
+        printWidth: 80,
+        bracketSpacing: true,
+        arrowParens: 'avoid',
+        endOfLine: 'auto', // 한줄 추가
+      },
+    ],
+  },
+}
