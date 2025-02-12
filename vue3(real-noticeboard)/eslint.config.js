@@ -5,7 +5,7 @@ module.exports = {
   root: true,
   extends: ['plugin:vue/vue3-essential', 'eslint:recommended', '@vue/eslint-config-prettier'],
   env: {
-    'vue/setup-compiler-macros': true,
+    'vue/setup-compiler-macros': false,
   },
   parserOptions: {
     ecmaVersion: 'latest',
@@ -15,12 +15,12 @@ module.exports = {
     'prettier/prettier': [
       'error',
       {
-        singleQuote: true,
-        semi: true,
+        singleQuote: false,
+        semi: false,
         tabWidth: 2,
         trailingComma: 'all',
         printWidth: 80,
-        bracketSpacing: true,
+        bracketSpacing: false,
         arrowParens: 'avoid',
         endOfLine: 'auto', // 한줄 추가
       },
