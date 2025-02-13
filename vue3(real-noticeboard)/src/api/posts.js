@@ -1,12 +1,28 @@
-// axios
-const posts = [
-  { id: 1, title: '제목1', content: '내용1', createdAt: '2021-01-01' },
-  { id: 2, title: '제목2', content: '내용2', createdAt: '2022-01-02' },
-  { id: 3, title: '제목3', content: '내용3', createdAt: '2023-01-03' },
-  { id: 4, title: '제목4', content: '내용4', createdAt: '2024-01-04' },
-  { id: 5, title: '제목5', content: '내용5', createdAt: '2025-01-05' },
-]
+import axios from 'axios'
+
+const baseURL = import.meta.env.VITE_APP_API_URL // import.meta.env로 접근하여 변수 사용
+
+const instance = axios.create({
+  baseURL,
+})
 
 export function getPosts() {
-  return posts
+  console.log(baseURL)
+  return instance.get(`${baseURL}/posts`)
+}
+
+export function getPostsId(id) {
+  return instance.get(`${baseURL}/posts:${id}`)
+}
+
+export function createPost(data) {
+  return instance.post(`${baseURL}/posts`, data)
+}
+
+export function updatePost(id, data) {
+  return instance.put(`${baseURL}/posts/${id}`, data)
+}
+
+export function deletePost(id) {
+  return instance.delete(`${baseURL}/posts/${id}`)
 }
