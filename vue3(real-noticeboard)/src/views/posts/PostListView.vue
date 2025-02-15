@@ -1,5 +1,19 @@
 <template>
   <div>게시글 목록</div>
+  <form @submit.prevent>
+    <div class="row g-3">
+      <div class="col">
+        <input v-model="params.title_like" type="text" class="form-control" />
+      </div>
+      <div class="col-3">
+        <select v-model="params._limit" class="form-select">
+          <option value="3">3개씩 보기</option>
+          <option value="6">6개씩 보기</option>
+          <option value="9">9개씩 보기</option>
+        </select>
+      </div>
+    </div>
+  </form>
   <hr class="my-4" />
   <div class="row g-3">
     <div v-for="post in posts" :key="post.id" class="col-4">
@@ -11,35 +25,69 @@
       />
     </div>
   </div>
+  <nav class="mt-5" aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" :class="{ disabled: !(params._page > 1) }">
+        <a class="page-link" href="#" aria-label="Previous" @click.prevent="--params._page">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li
+        class="page-item"
+        v-for="count in pageCount"
+        :key="count"
+        :class="{ active: params._page === count }"
+      >
+        <a class="page-link" href="#" @click.prevent="params._page = count">{{ count }}</a>
+      </li>
+      <li class="page-item" :class="{ disabled: !(params._page < pageCount) }">
+        <a class="page-link" href="#" aria-label="Next" @click.prevent="++params._page">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
 </template>
 
 <script setup>
-import PostItem from '@/components/posts/PostItem.vue'
-import { getPosts } from '@/api/posts'
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, ref, watchEffect } from 'vue';
+import { useRouter } from 'vue-router';
 
-const router = useRouter()
-const posts = ref([])
+import { getPosts } from '@/api/posts';
+import PostItem from '@/components/posts/PostItem.vue';
 
-const fetchPosts = async () => {
+const router = useRouter();
+const posts = ref([]);
+const params = ref({
+  _sort: 'createdAt',
+  _order: 'desc',
+  _page: 1,
+  _limit: 3,
+  title_like: '',
+});
+const totalCount = ref(0);
+const pageCount = computed(() => Math.ceil(totalCount.value / params.value._limit));
+
+const fetchPost = async () => {
   try {
-    const { data } = await getPosts()
-    posts.value = data
+    const { data, headers } = await getPosts(params.value);
+    posts.value = data;
+    totalCount.value = headers['x-total-count'];
   } catch (error) {
-    console.log(error)
+    console.error(error);
   }
-}
-fetchPosts()
+};
 
-const goPage = (id) => {
+watchEffect(fetchPost);
+
+const goPage = id => {
   router.push({
     name: 'PostDetail',
     params: {
       id,
     },
-  })
-}
+  });
+};
 </script>
 
 <style lang="scss" scoped></style>

@@ -18,30 +18,31 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { createPost } from '@/api/posts'
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-const router = useRouter()
+import { createPost } from '@/api/posts';
+
+const router = useRouter();
 const form = ref({
   title: null,
   content: null,
-})
+});
 const save = () => {
   try {
     createPost({
       ...form.value,
       createdAt: Date.now(),
-    })
-    router.push({ name: 'PostList' })
+    });
+    router.replace({ name: 'PostList' });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
 const goListPage = () => {
-  router.push({ name: 'PostList' })
-}
+  router.push({ name: 'PostList' });
+};
 </script>
 
 <style lang="scss" scoped></style>

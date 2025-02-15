@@ -1,7 +1,7 @@
 <template>
-  <h2>제목</h2>
-  <p>내용</p>
-  <p>2020-01-01</p>
+  <h2>{{ post.title }}</h2>
+  <p>{{ post.content }}</p>
+  <p class="text-muted">{{ post.contentedAt }}</p>
   <hr class="my-4" />
   <div class="row g-2">
     <div class="col-auto">
@@ -18,20 +18,52 @@
       <button class="btn btn-outline-primary" @click="goEditPage">수정</button>
     </div>
     <div class="col-auto">
-      <button class="btn btn-outline-danger">삭제</button>
+      <button class="btn btn-outline-danger" @click="removePost">삭제</button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { useRouter, useRoute } from 'vue-router'
+import { ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
-const route = useRoute()
-const router = useRouter()
-const id = route.params.id
+import { deletePost, getPostsById } from '@/api/posts';
 
-const goListPage = () => router.push({ name: 'PostList' })
-const goEditPage = () => router.push({ name: 'PostEdit', params: { id } })
+const route = useRoute();
+const router = useRouter();
+const id = route.params.id;
+
+const post = ref({});
+
+(async function () {
+  try {
+    const { data } = await getPostsById(id);
+    setPost(data);
+  } catch (error) {
+    console.error(error);
+  }
+})();
+
+const setPost = ({ title, content, createdAt }) => {
+  post.value.title = title;
+  post.value.content = content;
+  post.value.createdAt = createdAt;
+};
+
+const removePost = () => {
+  try {
+    if (confirm('삭제 하시겠습니끼?') === false) {
+      return;
+    }
+    deletePost(id);
+    router.replace({ name: 'PostList' });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const goListPage = () => router.push({ name: 'PostList' });
+const goEditPage = () => router.push({ name: 'PostEdit', params: { id } });
 </script>
 
 <style lang="scss" scoped></style>
