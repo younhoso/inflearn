@@ -1,15 +1,16 @@
-import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
-import AboutView from '@/views/AboutView.vue'
-import NotFoundView from '@/views/NotFoundView.vue'
-import PostCreateView from '@/views/posts/PostCreateView.vue'
-import PostDetailView from '@/views/posts/PostDetailView.vue'
-import PostListView from '@/views/posts/PostListView.vue'
-import PostEditView from '@/views/posts/PostEditView.vue'
-import NestedView from '@/views/nested/NestedView.vue'
-import NestedOneView from '@/views/nested/NestedOneView.vue'
-import NestedTwoView from '@/views/nested/NestedTwoView.vue'
-import NestedHomeView from '@/views/nested/NestedHomeView.vue'
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router';
+
+import AboutView from '@/views/AboutView.vue';
+import HomeView from '@/views/HomeView.vue';
+import NotFoundView from '@/views/NotFoundView.vue';
+import NestedHomeView from '@/views/nested/NestedHomeView.vue';
+import NestedOneView from '@/views/nested/NestedOneView.vue';
+import NestedTwoView from '@/views/nested/NestedTwoView.vue';
+import NestedView from '@/views/nested/NestedView.vue';
+import PostCreateView from '@/views/posts/PostCreateView.vue';
+import PostDetailView from '@/views/posts/PostDetailView.vue';
+import PostEditView from '@/views/posts/PostEditView.vue';
+import PostListView from '@/views/posts/PostListView.vue';
 
 const routes = [
   {
@@ -36,6 +37,7 @@ const routes = [
     path: '/posts/:id',
     name: 'PostDetail',
     component: PostDetailView,
+    props: true,
   },
   {
     path: '/posts/:id/edit',
@@ -69,12 +71,12 @@ const routes = [
     name: 'NotFound',
     component: NotFoundView,
   },
-]
+];
 
 const router = createRouter({
   history: createWebHistory(), // History모드로 실행됨.
   // history: createWebHashHistory(), // Hash모드로 실행됨.
   routes,
-})
+});
 
-export default router
+export default router;

@@ -1,21 +1,21 @@
-import { posts } from '.'
+import { posts } from '.';
 
 export function getPosts(params) {
-  return posts.get('/', { params })
+  return posts.get('/', { params });
 }
 
 export function getPostsById(id) {
-  return posts.get(`/${id}`)
+  return posts.get(`/${id}`);
 }
 
 export function createPost(data) {
-  return posts.post('', data)
+  return posts.post('', data);
 }
 
 export function updatePost(id, data) {
-  return posts.put(`/${id}`, data)
+  return posts.put(`/${id}`, data);
 }
 
 export function deletePost(id) {
-  return posts.delete(`/${id}`)
+  return posts.delete(`/${id}`);
 }

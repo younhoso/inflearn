@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { defineProps, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { deletePost, getPostsById } from '@/api/posts';
@@ -34,6 +34,10 @@ const router = useRouter();
 const id = route.params.id;
 
 const post = ref({});
+
+const props = defineProps({
+  id: String,
+});
 
 (async function () {
   try {
