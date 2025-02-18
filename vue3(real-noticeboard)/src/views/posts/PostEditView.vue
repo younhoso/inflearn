@@ -39,7 +39,7 @@ const setPost = ({ title, content }) => {
 fetchPost();
 const edit = async () => {
   try {
-    await updatePost(id, { ...post.value, createdAt: Date.now() });
+    await updatePost(id, { ...post.value });
     router.replace({ name: 'PostDetail', params: { id } });
   } catch (error) {
     console.error(error);

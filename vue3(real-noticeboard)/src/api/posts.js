@@ -12,8 +12,13 @@ export function createPost(data) {
   return posts.post('', data);
 }
 
+// put(전체 업데이트)과, patch(부분 업데이트) 용도가 다르다.
+// export function updatePost(id, data) {
+//   return posts.put(`/${id}`, data);
+// }
+
 export function updatePost(id, data) {
-  return posts.put(`/${id}`, data);
+  return posts.patch(`/${id}`, data);
 }
 
 export function deletePost(id) {
