@@ -24,9 +24,6 @@ export default {
 import { ref, inject } from 'vue';
 import { useRouter } from 'vue-router';
 
-import AppCard from '@/components/AppCard.vue';
-import AppGrid from '@/components/AppGrid.vue';
-
 const router = useRouter();
 const goAobutPage = () => {
   router.push({
