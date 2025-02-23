@@ -8,20 +8,10 @@
   <AppGrid :items="items" v-slot="{ item }" col-class="col-4">
     <AppCard>{{ item }}</AppCard>
   </AppGrid>
-  <button @click="person.say"></button>
 </template>
 
-<script>
-export default {
-  created() {
-    console.log(this.$person);
-    this.$person.say();
-  },
-};
-</script>
-
 <script setup>
-import { ref, inject } from 'vue';
+import { inject, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
