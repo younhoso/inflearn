@@ -8,10 +8,20 @@
   <AppGrid :items="items" v-slot="{ item }" col-class="col-4">
     <AppCard>{{ item }}</AppCard>
   </AppGrid>
+  <button @click="person.say"></button>
 </template>
 
+<script>
+export default {
+  created() {
+    console.log(this.$person);
+    this.$person.say();
+  },
+};
+</script>
+
 <script setup>
-import { ref } from 'vue';
+import { ref, inject } from 'vue';
 import { useRouter } from 'vue-router';
 
 import AppCard from '@/components/AppCard.vue';
@@ -25,6 +35,9 @@ const goAobutPage = () => {
 };
 
 const items = ref(['사과', '딸기', '포도', '바나나']);
+
+const person = inject('person');
+console.log(person);
 </script>
 
 <style lang="scss" scoped></style>
