@@ -7,8 +7,6 @@
       <button class="btn btn-primary">수정</button>
     </template>
   </PostForm>
-
-  <AppAlert :items="alerts" />
 </template>
 
 <script setup>
@@ -17,7 +15,9 @@ import { useRoute, useRouter } from 'vue-router';
 
 import { getPostsById, updatePost } from '@/api/posts';
 import PostForm from '@/components/posts/PostForm.vue';
+import { useAlert } from '@/hooks/useAlert';
 
+const { vAlert, vSuccess } = useAlert();
 const route = useRoute();
 const router = useRouter();
 const id = route.params.id;
@@ -46,8 +46,8 @@ fetchPost();
 const edit = async () => {
   try {
     await updatePost(id, { ...post.value });
-    vAlert('수정이 완료되었습니다.!', 'success');
-    // router.push({ name: 'PostDetail', params: { id } });
+    vSuccess('수정이 완료되었습니다.!');
+    router.push({ name: 'PostDetail', params: { id } });
   } catch (error) {
     console.error(error);
     vAlert(error.message);
@@ -56,14 +56,6 @@ const edit = async () => {
 
 const goDetailPage = () => {
   router.push({ name: 'PostDetail', params: { id } });
-};
-
-const alerts = ref([]);
-const vAlert = (message, type = 'error') => {
-  alerts.value.push({ message, type });
-  setTimeout(() => {
-    alerts.value.shift();
-  }, 2000);
 };
 </script>
 

@@ -15,8 +15,11 @@ import { useRouter } from 'vue-router';
 
 import { createPost } from '@/api/posts';
 import PostForm from '@/components/posts/PostForm.vue';
+import { useAlert } from '@/hooks/useAlert';
 
 const router = useRouter();
+const { vAlert, vSuccess } = useAlert();
+
 const form = ref({
   title: null,
   content: null,
@@ -27,9 +30,11 @@ const save = () => {
       ...form.value,
       createdAt: Date.now(),
     });
-    router.replace({ name: 'PostList' });
+    vSuccess('등록이 완료되었습니다.');
+    router.push({ name: 'PostList' });
   } catch (error) {
     console.log(error);
+    vAlert(error.message);
   }
 };
 
