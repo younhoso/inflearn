@@ -1,7 +1,6 @@
 <template>
   <TheHeader />
   <TheView />
-
   <AppAlert :items="alerts" />
 </template>
 
