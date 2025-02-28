@@ -35,11 +35,9 @@ import { useRouter } from 'vue-router';
 import { getPosts } from '@/api/posts';
 import PostFilter from '@/components/posts/PostFilter.vue';
 import PostItem from '@/components/posts/PostItem.vue';
+import { useAxios } from '@/hooks/useAxios';
 
 const router = useRouter();
-const error = ref(null);
-const loading = ref(false);
-const posts = ref([]);
 const params = ref({
   _sort: 'createdAt',
   _order: 'desc',
@@ -47,23 +45,10 @@ const params = ref({
   _limit: 3,
   title_like: '',
 });
-const totalCount = ref(0);
+
+const { data: posts, response, loading, error } = useAxios('/posts', { method: 'get', params });
+const totalCount = computed(() => response.value.headers['x-total-count']);
 const pageCount = computed(() => Math.ceil(totalCount.value / params.value._limit));
-
-const fetchPost = async () => {
-  try {
-    loading.value = true;
-    const { data, headers } = await getPosts(params.value);
-    posts.value = data;
-    totalCount.value = headers['x-total-count'];
-  } catch (err) {
-    error.value = err;
-  } finally {
-    loading.value = false;
-  }
-};
-
-watchEffect(fetchPost);
 
 const goPage = id => {
   router.push({
