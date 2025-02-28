@@ -1,12 +1,18 @@
 <template>
-  <h2>게시글 수정</h2>
-  <hr class="my-4" />
-  <PostForm v-model:title="post.title" v-model:content="post.content" @submit.prevent="edit">
-    <template #actions>
-      <button type="button" class="btn btn-outline-dark" @click="goDetailPage">취소</button>
-      <button class="btn btn-primary">수정</button>
-    </template>
-  </PostForm>
+  <AppLoading v-if="loading" />
+
+  <AppError v-else-if="error" :message="error.message" />
+
+  <div v-else>
+    <h2>게시글 수정</h2>
+    <hr class="my-4" />
+    <PostForm v-model:title="post.title" v-model:content="post.content" @submit.prevent="edit">
+      <template #actions>
+        <button type="button" class="btn btn-outline-dark" @click="goDetailPage">취소</button>
+        <button class="btn btn-primary">수정</button>
+      </template>
+    </PostForm>
+  </div>
 </template>
 
 <script setup>
@@ -27,13 +33,18 @@ const post = ref({
   content: null,
 });
 
+const error = ref(null);
+const loading = ref(false);
+
 const fetchPost = async () => {
   try {
+    loading.value = true;
     const { data } = await getPostsById(id);
     setPost(data);
-  } catch (error) {
-    console.error(error);
-    vAlert(error.message);
+  } catch (err) {
+    error.value = err;
+  } finally {
+    loading.value = false;
   }
 };
 
