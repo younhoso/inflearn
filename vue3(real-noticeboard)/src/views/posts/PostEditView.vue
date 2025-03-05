@@ -23,7 +23,7 @@ import { getPostsById, updatePost } from '@/api/posts';
 import PostForm from '@/components/posts/PostForm.vue';
 import { useAlert } from '@/hooks/useAlert';
 
-const { vAlert, vSuccess } = useAlert();
+const { vSuccess, vError } = useAlert();
 const route = useRoute();
 const router = useRouter();
 const id = route.params.id;
@@ -61,7 +61,7 @@ const edit = async () => {
     router.push({ name: 'PostDetail', params: { id } });
   } catch (error) {
     console.error(error);
-    vAlert(error.message);
+    vError(error.message);
   }
 };
 

@@ -29,10 +29,9 @@
 </template>
 
 <script setup>
-import { computed, ref, watchEffect } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { getPosts } from '@/api/posts';
 import PostFilter from '@/components/posts/PostFilter.vue';
 import PostItem from '@/components/posts/PostItem.vue';
 import { useAxios } from '@/hooks/useAxios';
@@ -42,7 +41,7 @@ const params = ref({
   _sort: 'createdAt',
   _order: 'desc',
   _page: 1,
-  _limit: 3,
+  _limit: 6,
   title_like: '',
 });
 
