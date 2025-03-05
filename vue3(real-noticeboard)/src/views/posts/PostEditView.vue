@@ -6,10 +6,16 @@
   <div v-else>
     <h2>게시글 수정</h2>
     <hr class="my-4" />
-    <PostForm v-model:title="post.title" v-model:content="post.content" @submit.prevent="edit">
+    <PostForm v-model:title="form.title" v-model:content="form.content" @submit.prevent="edit">
       <template #actions>
         <button type="button" class="btn btn-outline-dark" @click="goDetailPage">취소</button>
-        <button class="btn btn-primary">수정</button>
+        <button class="btn btn-primary" :disabled="editLoading">
+          <template v-if="editLoading">
+            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"> </span>
+            <span class="visually-hidden">Loadding...</span>
+          </template>
+          <template v-else>수정</template>
+        </button>
       </template>
     </PostForm>
   </div>
@@ -22,47 +28,38 @@ import { useRoute, useRouter } from 'vue-router';
 import { getPostsById, updatePost } from '@/api/posts';
 import PostForm from '@/components/posts/PostForm.vue';
 import { useAlert } from '@/hooks/useAlert';
+import { useAxios } from '@/hooks/useAxios';
 
 const { vSuccess, vError } = useAlert();
 const route = useRoute();
 const router = useRouter();
 const id = route.params.id;
 
-const post = ref({
-  title: null,
-  content: null,
-});
+const { data: form, loading, error } = useAxios(`/posts/${id}`);
 
-const error = ref(null);
-const loading = ref(false);
+const {
+  error: editError,
+  loading: editLoading,
+  excute,
+} = useAxios(
+  `/posts/${id}`,
+  { method: 'patch' },
+  {
+    immediate: false,
+    onSuccess: () => {
+      vSuccess('수정이 완료되었습니다.!');
+      router.push({ name: 'PostDetail', params: { id } });
+    },
+    onError: err => {
+      vError(err.message);
+    },
+  },
+);
 
-const fetchPost = async () => {
-  try {
-    loading.value = true;
-    const { data } = await getPostsById(id);
-    setPost(data);
-  } catch (err) {
-    error.value = err;
-  } finally {
-    loading.value = false;
-  }
-};
-
-const setPost = ({ title, content }) => {
-  post.value.title = title;
-  post.value.content = content;
-};
-
-fetchPost();
-const edit = async () => {
-  try {
-    await updatePost(id, { ...post.value });
-    vSuccess('수정이 완료되었습니다.!');
-    router.push({ name: 'PostDetail', params: { id } });
-  } catch (error) {
-    console.error(error);
-    vError(error.message);
-  }
+const edit = () => {
+  excute({
+    ...form.value,
+  });
 };
 
 const goDetailPage = () => {
