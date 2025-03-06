@@ -30,10 +30,9 @@
 </template>
 
 <script setup>
-import { defineProps, ref } from 'vue';
+import { defineProps } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-import { deletePost, getPostsById } from '@/api/posts';
 import { useAlert } from '@/hooks/useAlert';
 import { useAxios } from '@/hooks/useAxios';
 
@@ -51,7 +50,7 @@ const { data: post, response, loading, error } = useAxios(`/posts/${props.id}`);
 const {
   error: removeError,
   loading: removeLoading,
-  excute,
+  execute,
 } = useAxios(
   `/posts/${props.id}`,
   { method: 'delete' },
@@ -71,7 +70,7 @@ const removePost = () => {
   if (confirm('삭제 하시겠습니끼?') === false) {
     return;
   }
-  excute();
+  execute();
 };
 
 const goListPage = () => router.push({ name: 'PostList' });

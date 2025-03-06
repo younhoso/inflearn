@@ -21,7 +21,6 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { createPost } from '@/api/posts';
 import PostForm from '@/components/posts/PostForm.vue';
 import { useAlert } from '@/hooks/useAlert';
 import { useAxios } from '@/hooks/useAxios';
@@ -34,7 +33,7 @@ const form = ref({
   content: null,
 });
 
-const { error, loading, excute } = useAxios(
+const { error, loading, execute } = useAxios(
   '/posts',
   {
     method: 'post',
@@ -52,7 +51,7 @@ const { error, loading, excute } = useAxios(
   },
 );
 const save = async () => {
-  excute({ ...form.value, createdAt: Date.now() });
+  execute({ ...form.value, createdAt: Date.now() });
 };
 
 const goListPage = () => {

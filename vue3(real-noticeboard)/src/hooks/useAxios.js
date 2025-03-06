@@ -21,7 +21,7 @@ export const useAxios = (url, config = {}, option = {}) => {
 
   const { params } = config;
 
-  const excute = body => {
+  const execute = body => {
     data.value = null;
     loading.value = true;
     error.value = null;
@@ -50,10 +50,10 @@ export const useAxios = (url, config = {}, option = {}) => {
   };
 
   if (isRef(params)) {
-    watchEffect(excute);
+    watchEffect(execute);
   } else {
     if (immediate) {
-      excute();
+      execute();
     }
   }
 
@@ -62,6 +62,6 @@ export const useAxios = (url, config = {}, option = {}) => {
     response,
     loading,
     error,
-    excute,
+    execute,
   };
 };

@@ -22,10 +22,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-import { getPostsById, updatePost } from '@/api/posts';
 import PostForm from '@/components/posts/PostForm.vue';
 import { useAlert } from '@/hooks/useAlert';
 import { useAxios } from '@/hooks/useAxios';
@@ -40,7 +38,7 @@ const { data: form, loading, error } = useAxios(`/posts/${id}`);
 const {
   error: editError,
   loading: editLoading,
-  excute,
+  execute,
 } = useAxios(
   `/posts/${id}`,
   { method: 'patch' },
@@ -57,7 +55,7 @@ const {
 );
 
 const edit = () => {
-  excute({
+  execute({
     ...form.value,
   });
 };
